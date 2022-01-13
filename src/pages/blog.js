@@ -1,12 +1,30 @@
 import React from "react";
 import Layout from "../components/layout";
+import { graphql } from "gatsby";
 
-const BlogPage = () =>{
+const BlogPage = ({data}) =>{
     return(
         <Layout pageTitle="Blog">
-            <p>Posts go in here</p>
+            <ul>
+            {
+            data.allFile.nodes.map(node => (
+                <li key={node.name}>
+                    {node.name}
+                </li>
+            ))
+            }
+            </ul>
         </Layout>
     )
 }
 
+export const allPostsQuery = graphql`
+query{
+    allFile(filter: {sourceInstanceName: {eq: "blog"}}) {
+      nodes {
+        name
+      }
+    }
+  }
+  `
 export default BlogPage
