@@ -6,9 +6,9 @@ const IndexPage = () => {
   return (
     <Layout pageTitle="Home">
       <p>I'm making this by following the Gatsby Tutorial.</p>
-    <StaticImage alt="react" src="../images/react.webp"></StaticImage>
+      <StaticImage alt="react" src="../images/react.webp"></StaticImage>
     </Layout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

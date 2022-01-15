@@ -1,33 +1,35 @@
-import React from "react"
-import Layout from "../../components/layout"
-import { graphql } from "gatsby"
-import { MDXRenderer } from "gatsby-plugin-mdx"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import React from "react";
+import Layout from "../../components/layout";
+import { graphql } from "gatsby";
+import { MDXRenderer } from "gatsby-plugin-mdx";
+import { GatsbyImage } from "gatsby-plugin-image";
 
 const BlogPost = (props) => {
+  // const image = getImage(props.data.mdx.frontmatter.hero_image)
 
-    const image = getImage(props.data.mdx.frontmatter.hero_image)
-
-    return (
-        <Layout pageTitle={props.data.mdx.frontmatter.title}>
-            <p>Posted: {props.data.mdx.frontmatter.date}</p>
-            <GatsbyImage image={image} alt={props.data.mdx.frontmatter.hero_image_alt}/>
-            <p>
-                Photo Credit:{" "}
-                <a href={props.data.mdx.frontmatter.hero_image_credit_link}>
-                    {props.data.mdx.frontmatter.hero_image_credit_text}
-                </a>
-            </p>
-            <MDXRenderer>
-                {props.data.mdx.body}
-            </MDXRenderer>
-        </Layout>
-    )
-}
+  return (
+    <Layout pageTitle={props.data.mdx.frontmatter.title}>
+      <p>Posted: {props.data.mdx.frontmatter.date}</p>
+      <GatsbyImage
+        image={
+          props.data.mdx.frontmatter.hero_image.childImageSharp.gatsbyImageData
+        }
+        alt={props.data.mdx.frontmatter.hero_image_alt}
+      />
+      <p>
+        Photo Credit:{" "}
+        <a href={props.data.mdx.frontmatter.hero_image_credit_link}>
+          {props.data.mdx.frontmatter.hero_image_credit_text}
+        </a>
+      </p>
+      <MDXRenderer>{props.data.mdx.body}</MDXRenderer>
+    </Layout>
+  );
+};
 
 export const query = graphql`
-query ($id: String) {
-    mdx(id: {eq: $id}) {
+  query ($id: String) {
+    mdx(id: { eq: $id }) {
       id
       frontmatter {
         title
@@ -44,7 +46,6 @@ query ($id: String) {
       body
     }
   }
-  
-`
+`;
 
-export default BlogPost
+export default BlogPost;
