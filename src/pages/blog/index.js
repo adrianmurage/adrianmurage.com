@@ -4,7 +4,6 @@ import { graphql, Link } from "gatsby";
 import { GatsbyImage } from "gatsby-plugin-image";
 
 const BlogPage = ({ data }) => {
-  console.log(data);
   return (
     <section>
       <Layout pageTitle="Blog">
@@ -12,9 +11,9 @@ const BlogPage = ({ data }) => {
           <section>
             <GatsbyImage
               image={
-                data.mdx.frontmatter.hero_image.childImageSharp.gatsbyImageData
+                node.frontmatter.hero_image.childImageSharp.gatsbyImageData
               }
-              alt={data.mdx.frontmatter.hero_image_alt}
+              alt={node.frontmatter.hero_image_alt}
             />
             <article key={node.id}>
               <h2>
@@ -30,24 +29,20 @@ const BlogPage = ({ data }) => {
 };
 
 export const query = graphql`
-  query ($id: String) {
+  query  {
     allMdx(sort: { fields: frontmatter___date, order: DESC }) {
       nodes {
         id
         frontmatter {
           title
           date(formatString: "D MMMM, YYYY")
-        }
-        slug
-      }
-    }
-    mdx(id: { eq: $id }) {
-      frontmatter {
-        hero_image {
-          childImageSharp {
-            gatsbyImageData
+          hero_image {
+            childImageSharp {
+              gatsbyImageData
+            }
           }
         }
+        slug
       }
     }
   }
