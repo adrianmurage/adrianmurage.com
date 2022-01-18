@@ -29,7 +29,7 @@ const BlogPage = ({ data }) => {
 };
 
 export const query = graphql`
-  query  {
+  query {
     allMdx(sort: { fields: frontmatter___date, order: DESC }) {
       nodes {
         id

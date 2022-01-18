@@ -2,15 +2,22 @@
 date: "2022-01-17"
 title: "trying out new custom code blocks"
 hero_image: "./code-blocks.jpg"
-hero_image_alt: 'White and Black Plastic Toy Decor'
+hero_image_alt: "White and Black Plastic Toy Decor"
 hero_image_credit_text: "Magda Ehlers"
 hero_image_credit_link: "https://www.pexels.com/photo/white-and-black-plastic-toy-decor-1329317/"
 ---
+
 Here's an example of my new custom code blocks:
 
 ```jsx
 // here's a button in React!
-<button onClick={() => {alert("Hello MDX!")}}>test</button>
+<button
+  onClick={() => {
+    alert("Hello MDX!");
+  }}
+>
+  test
+</button>
 ```
 
 Wow! Such code snippets!
@@ -19,9 +26,9 @@ Let's see another, with line highlighting:
 ```js
 // fizzbuzz in JS
 for (let i = 1; i <= 100; i++) {
-    let out = '';
-    if (i % 3 === 0) out += 'Fizz';
-    if (i % 5 === 0) out += 'Buzz';
-    console.log(out || i);
+  let out = "";
+  if (i % 3 === 0) out += "Fizz";
+  if (i % 5 === 0) out += "Buzz";
+  console.log(out || i);
 }
 ```
