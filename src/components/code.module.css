@@ -1,0 +1,56 @@
+.code-box {
+  background-color: #011627;
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+
+.code-box-head {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.code-box-language-label {
+  background-color: #ffffff;
+  margin-right: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  text-transform: uppercase;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-box-file-name {
+  color: #9d9d9d;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-box-copy-button {
+  margin-right: 1.5rem;
+  margin-top: 0.5rem;
+  padding: 8px 12px;
+  background-color: #00f5c426;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-family: sans-serif;
+  line-height: 1;
+}
+
+.code-box-code-snippet {
+  overflow: auto;
+  background-color: #011627;
+  border-radius: 0.5rem;
+}
