@@ -62,9 +62,7 @@ const Code = (props) => {
           {isCopied ? "🎉 Copied!" : "Copy"}
         </button>
       </div>
-      <div
-        className={codeBoxCodeSnippet}
-      >
+      <div className={codeBoxCodeSnippet}>
         <Highlight
           {...defaultProps}
           code={code}
