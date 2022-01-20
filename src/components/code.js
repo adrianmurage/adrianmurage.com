@@ -2,6 +2,14 @@ import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/nightOwl";
 import rangeParser from "parse-numeric-range";
+import {
+  codeBox,
+  codeBoxHead,
+  codeBoxLanguageLabel,
+  codeBoxFileName,
+  codeBoxCopyButton,
+  codeBoxCodeSnippet,
+} from "./code.module.css";
 
 const calculateLinesToHighlight = (raw) => {
   const lineNumbers = rangeParser(raw);
@@ -39,75 +47,23 @@ const Code = (props) => {
   );
 
   return (
-    <div
-      style={{
-        background: "#011627",
-        borderRadius: "0.5rem",
-        marginTop: "2rem",
-        marginBottom: "2rem",
-        paddingLeft: "1.5rem",
-      }}
-    >
-      <div style={{ display: "flex", position: "relative" }}>
-        <div
-          style={{
-            background: "#ffffff",
-            marginRight: "1rem",
-            paddingLeft: "0.5rem",
-            paddingRight: "0.5rem",
-            textTransform: "uppercase",
-            borderBottomLeftRadius: "0.5rem",
-            borderBottomRightRadius: "0.5rem",
-            fontFamily: "Montserrat",
-            fontWeight: "bold",
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >{`${language}`}</div>
-        <div
-          style={{
-            color: "#9d9d9d",
-            fontFamily: "Montserrat",
-            fontStyle: "italic",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {file && `${file}`}
-        </div>
-        <div style={{ flexGrow: "1" }}></div>
+    <div className={codeBox}>
+      <div className={codeBoxHead}>
+        <div className={codeBoxLanguageLabel}>{`${language}`}</div>
+        <div className={codeBoxFileName}>{file && `${file}`}</div>
         <button
           onClick={() => {
             copyToClipboard(code);
             setIsCopied(true);
             setTimeout(() => setIsCopied(false), 1000);
           }}
-          style={{
-            marginRight: "1.5rem",
-            marginTop: "0.5rem",
-            padding: "8px 12px",
-            background: "#00f5c426",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            color: "#E2E8F0",
-            fontSize: "14px",
-            fontFamily: "sans-serif",
-            lineHeight: "1",
-          }}
+          className={codeBoxCopyButton}
         >
           {isCopied ? "🎉 Copied!" : "Copy"}
         </button>
       </div>
       <div
-        style={{
-          overflow: "auto",
-          background: "#011627",
-          borderRadius: "0.5rem",
-        }}
+        className={codeBoxCodeSnippet}
       >
         <Highlight
           {...defaultProps}
@@ -120,9 +76,6 @@ const Code = (props) => {
               className={className}
               style={{
                 ...style,
-                backgroundColor: "transparent",
-                float: "left",
-                minWidth: "100%",
               }}
             >
               {tokens.map((line, i) => (
