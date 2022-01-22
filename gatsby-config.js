@@ -1,19 +1,31 @@
 module.exports = {
   siteMetadata: {
-    siteUrl: "https://www.yourdomain.tld",
-    title: "Adrian Murage",
+    siteUrl: `https://www.yourdomain.tld`,
+    title: `Adrian Murage`,
   },
   plugins: [
-    "gatsby-plugin-image",
-    "gatsby-plugin-sharp",
+    `gatsby-plugin-image`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        name: `blog`,
-        path: `${__dirname}/blog`,
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 640,
+            },
+          },
+        ],
       },
     },
-    "gatsby-plugin-mdx",
-    "gatsby-transformer-sharp",
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/blog/`,
+        name: `blog`,
+      },
+    },
   ],
 };
