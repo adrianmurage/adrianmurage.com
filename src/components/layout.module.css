@@ -1,12 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;500;700&display=swap');
 
 :global * {
+  box-sizing: border-box;
   font-family: 'Inter', sans-serif;
+}
+
+:global p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(17, 24, 39);
+
 }
 
 .container {
   margin: auto;
-  max-width: 500px;
+  max-width: 736px;
   font-family: sans-serif;
 }
 
