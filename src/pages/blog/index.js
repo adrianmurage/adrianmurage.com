@@ -2,31 +2,40 @@ import React from "react";
 import Layout from "../../components/layout";
 import { graphql, Link } from "gatsby";
 import { GatsbyImage } from "gatsby-plugin-image";
-import { articleCardImage} from "./blog.module.css"
+import {
+  articleCardImage,
+  articleCard,
+  articleCardContainer,
+  articlePublishDate,
+  articleTitle,
+} from "./blog.module.css";
 
 const BlogPage = ({ data }) => {
   return (
     <section>
       <Layout pageTitle="Blog">
-        {data.allMdx.nodes.map((node) => (
-          <section>
-            <article key={node.id}>
-              <div>
-                <Link to={`/blog/${node.slug}`}>
-                  <GatsbyImage className={articleCardImage}
-                    image={
-                      node.frontmatter.hero_image.childImageSharp
-                        .gatsbyImageData
-                    }
-                    alt={node.frontmatter.hero_image_alt}
-                  />
-                  <h2>{node.frontmatter.title}</h2>
-                </Link>
-              </div>
-              <p> Podsted: {node.frontmatter.date}</p>
-            </article>
-          </section>
-        ))}
+        <div className={articleCardContainer}>
+          {data.allMdx.nodes.map((node) => (
+            <Link
+              className={articleCard}
+              key={node.id}
+              to={`/blog/${node.slug}`}
+            >
+              <GatsbyImage
+                className={articleCardImage}
+                image={
+                  node.frontmatter.hero_image.childImageSharp.gatsbyImageData
+                }
+                alt={node.frontmatter.hero_image_alt}
+              />
+              <h2 className={articleTitle}>{node.frontmatter.title}</h2>
+              <p className={articlePublishDate}>
+                {" "}
+                Podsted: {node.frontmatter.date}
+              </p>
+            </Link>
+          ))}
+        </div>
       </Layout>
     </section>
   );
@@ -42,9 +51,7 @@ export const query = graphql`
           date(formatString: "D MMMM, YYYY")
           hero_image {
             childImageSharp {
-              gatsbyImageData(
-                width: 400
-              )
+              gatsbyImageData(width: 400)
             }
           }
         }
