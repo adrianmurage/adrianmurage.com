@@ -2,27 +2,40 @@ import React from "react";
 import Layout from "../../components/layout";
 import { graphql, Link } from "gatsby";
 import { GatsbyImage } from "gatsby-plugin-image";
+import {
+  articleCardImage,
+  articleCard,
+  articleCardContainer,
+  articlePublishDate,
+  articleTitle,
+} from "./blog.module.css";
 
 const BlogPage = ({ data }) => {
   return (
     <section>
       <Layout pageTitle="Blog">
-        {data.allMdx.nodes.map((node) => (
-          <section>
-            <GatsbyImage
-              image={
-                node.frontmatter.hero_image.childImageSharp.gatsbyImageData
-              }
-              alt={node.frontmatter.hero_image_alt}
-            />
-            <article key={node.id}>
-              <h2>
-                <Link to={`/blog/${node.slug}`}>{node.frontmatter.title}</Link>
-              </h2>
-              <p> Podsted: {node.frontmatter.date}</p>
-            </article>
-          </section>
-        ))}
+        <div className={articleCardContainer}>
+          {data.allMdx.nodes.map((node) => (
+            <Link
+              className={articleCard}
+              key={node.id}
+              to={`/blog/${node.slug}`}
+            >
+              <GatsbyImage
+                className={articleCardImage}
+                image={
+                  node.frontmatter.hero_image.childImageSharp.gatsbyImageData
+                }
+                alt={node.frontmatter.hero_image_alt}
+              />
+              <h2 className={articleTitle}>{node.frontmatter.title}</h2>
+              <p className={articlePublishDate}>
+                {" "}
+                Podsted: {node.frontmatter.date}
+              </p>
+            </Link>
+          ))}
+        </div>
       </Layout>
     </section>
   );
@@ -38,7 +51,7 @@ export const query = graphql`
           date(formatString: "D MMMM, YYYY")
           hero_image {
             childImageSharp {
-              gatsbyImageData
+              gatsbyImageData(width: 400)
             }
           }
         }
