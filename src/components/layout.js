@@ -49,6 +49,25 @@ const Layout = ({ pageTitle, children }) => {
       </nav>
       <h1 className={heading}>{pageTitle}</h1>
       <main>{children}</main>
+      <br />
+      <br />
+      <footer>
+        <a></a>
+        <p>Made with ❤ in Nairobi.</p>
+        <p>
+          Powered by{" "}
+          <span>
+            <a href="https://www.gatsbyjs.com/">Gatsby.js,</a>
+          </span>{" "}
+          <span>
+            <a href="https://mdxjs.com/">MDX</a>
+          </span>{" "}
+          and,{" "}
+          <span>
+            <a href="https://www.netlify.com/">Netlify.</a>
+          </span>
+        </p>
+      </footer>
     </div>
   );
 };
