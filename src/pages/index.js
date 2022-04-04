@@ -35,7 +35,7 @@ const IndexPage = () => {
           </p>
           <p>
             Welcome to my digital garden where I share what I'm learning,
-            showcase my projects 🚀, and document becoming a better developer
+            showcase my projects 🚀, document becoming a better developer,
             and growing a career in tech 💻
           </p>
         </div>
