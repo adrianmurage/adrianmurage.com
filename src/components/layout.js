@@ -47,7 +47,7 @@ const Layout = ({ pageTitle, children }) => {
       <br />
       <footer>
         <a></a>
-        <p>Made with ❤ in Nairobi.</p>
+        <p>Made with 💗 in Nairobi, Kenya.</p>
         <p>
           Powered by{" "}
           <span>
