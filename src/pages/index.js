@@ -15,8 +15,7 @@ const IndexPage = () => {
         <div>
           <h1 className={profileHeading}>Hi there, I'm Adrian Murage 👋🏽</h1>
           <p>
-            I love building things. The rush I get from it is almost
-            unparalleled.
+            I love building things. The rush I get from it is unparalleled.
           </p>
           <p>
             I am currently interning at{" "}
@@ -31,7 +30,7 @@ const IndexPage = () => {
             <a href="https://podcast.hackernoon.com/">HackerNoon Podcast.</a>
           </p>
           <p>
-            On the side, I am retraining as a Frontend Developer primarily
+            On the side, I am re-training as a Frontend Developer primarily
             working with React JS.
           </p>
           <p>
