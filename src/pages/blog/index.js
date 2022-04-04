@@ -14,6 +14,7 @@ const BlogPage = ({ data }) => {
   return (
     <section>
       <Layout pageTitle="Blog">
+        <h1 className="heading">Blog Posts</h1>
         <div className={articleCardContainer}>
           {data.allMdx.nodes.map((node) => (
             <Link
