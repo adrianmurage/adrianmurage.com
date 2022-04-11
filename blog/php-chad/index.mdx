@@ -7,9 +7,7 @@ hero_image_credit_text: "Ben Griffiths"
 hero_image_credit_link: "https://unsplash.com/photos/2Rd-hwT2xQ0"
 ---
 
-
-
-** Day 0 - 10/04/2022**
+## Day 0 - 10/04/2022
 
 The challenge here is simple. Build out a Junior Developer test project in 20ish days.
 
@@ -24,8 +22,74 @@ The breakdown of the challenge is documented on this [Notion page](https://www.n
 
 This is day 0 and no coding will be taking place. I spent sometime reading through the task breakdown and mentally preparing myself to start the challenge tomorrow.
 
-To becoming a PHP chad 🥂
+To becoming a PHP chad 🥂. Lol 😂.
 
 ![What in God's name is a PHP chad?](./php-chad-image.webp)
 
+## Day 1 - 11/04/2022
 
+The first thing I'll do is figure out how to wire up PHP with a MYSQL database then deploy it.
+
+All the testing and grading of this project will be done on a deployed site. So I think it would be wise to work with it deployed from the word go.
+
+The main benefit of this is to pick up on any breaking changes in realtime. Work on it everyday, deploy everyday. 
+
+For hosting I'll go with Heroku. For local development I'll go with XAMPP.
+
+I am currently developing on windows. But I do have access to a linux environment via [WSL](https://docs.microsoft.com/en-us/windows/wsl/about). 
+
+So I:
+1. Downloaded [XAMPP](https://www.apachefriends.org/download.html)
+2. Download [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+
+```php file=index.php
+<?php 
+echo "Hello there Heroku, Adrian here!"
+?>
+```
+
+Okay so I got some output on my XAMPP server. So that's great!
+
+![Hello world PHP](./hello_world_php.png)
+
+I  added version control. My choice being git and everything now lives in this [git repository](https://github.com/adrianmurage/product_listing).
+
+Using these two resources, I got the app deployed on heroku:
+1. [Heroku documentation](https://devcenter.heroku.com/articles/getting-started-with-php#deploy-the-app)
+2. [How to Deploy a PHP and MySQL site to Heroku and configure the database with PHPMyAdmin](https://www.doabledanny.com/Deploy-PHP-And-MySQL-to-Heroku)
+
+The app is deployed on https://murage-product-listing.herokuapp.com/
+
+![Hello world in php on heroku](./heroku_hello_world_php.png)
+
+The next step is to hook up the MYSQL database. 
+
+After following through resource 2 under how I got the app deployed on heroku above, I hit a dead end when I tried to connect to the database from my php file. 
+
+So I'll try switching resources and learn how to connect to a database from my OREILLY book.
+
+From a little learning, I've figured out that the connection method on the article works for the deployed version of the app. However it does not work locally on my XAMPP server. I think figuring out how to setup env variables for local development will enable me to get it to work locally so that I don't need to keep playing with the connection string every time I need to develop locally. 
+
+So now we learn about env varialbes in PHP 🥳🥳
+
+![One eternity later meme](./one_eternity_later.jpg)
+
+I finally figured out how to add the variables. With a little help from this here [stackoverflow question](https://stackoverflow.com/questions/37570410/how-to-set-environment-variables-in-apache-xampp).
+
+tl;dr
+
+I created a `.htaccess` file in my folder then added in the env variable like so:
+
+```php
+SetEnv CLEARDB_DATABASE_URL "get this value from the Heroku config"
+```
+
+And that got my local app working exactly like the deployed app!
+
+Which marks the end of day 1 learning and building with PHP 🥳
+
+What I accomplished today:
+1. Setup a local PHP development enviroment
+2. Setup a remote database and connected it to my PHP app
+3. Deployed my PHP app
+4. Accessed data stored in my PHP app
