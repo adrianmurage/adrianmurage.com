@@ -80,7 +80,7 @@ tl;dr
 
 I created a `.htaccess` file in my folder then added in the env variable like so:
 
-```php
+```php file=.htaccess
 SetEnv CLEARDB_DATABASE_URL "get this value from the Heroku config"
 ```
 
@@ -93,3 +93,68 @@ What I accomplished today:
 2. Setup a remote database and connected it to my PHP app
 3. Deployed my PHP app
 4. Accessed data stored in my PHP app
+
+## Day 2 - 12/04/2022
+
+Today's objective is to figure out where I would start when it comes to building this project.
+I have a few questions that I need to answer:
+1. How exactly does PHP interop with HTML and JavaScript
+2. What is the difference between Procedural PHP and Object Oriented PHP
+3. Understand OOP enough to be able to fix any problems that arise
+4. How does one setup simple routing
+
+HackerNoon's CEO once told me 
+> "I generally try to optimize by building up smaller wins first instead of going for the big one right away"
+
+So I'll do that here. 
+
+One requirement for this app is that there are two distinct pages:
+1. A product list page. Accessible by <your_website>/.
+2. A adding product page. Accessible by: <your_website>/add-product.
+
+Which tells me there's some routing I need to handle. About half an hour of research led me to a solution that's simple and workable for the scale of the app. 
+
+I found this [stack overflow question](https://stackoverflow.com/questions/20960877/the-basics-of-php-routing) and the second answer gives an OOP solution to the routing issue. 
+
+The author creates a `route.php` file with a `Route` class that handles the routing. They then include this in their `index.php` file and use an `add` method defined in the `Route` class to include specific files for each route. 
+
+So I could use it to include a `productlist.php` as the `/` page and `addproduct.php` as the `/add-product` page. 
+
+After adding it in, it almost immediately worked like a charm. 
+
+I did have to do a little debugging to figure out why it wasn't working at first, and I found that this snippet was project specific to the author:
+
+```php file=.htaccess
+RewriteBase /php/cfc/
+```
+
+And removing it got the router working ✅. So win number one today.
+
+Upon pushing to Heroku. The router was not working. My first guess was the .htaccess file. Given that I have login information to my SQL server in it, it makes it unwise to have it in version control. 
+
+After trying to figure it out for a while, I settled on removing the sensitive information and adding the file to version control.
+
+```php file=.htaccess
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L]
+
+```
+
+But this brings me back to the part where I was trying to figure out where to put the sensitve SQL server env variable in a way that would just work. To minimize the need to keep changing the code for the local and remote envs. 
+
+This brought me to this [stack overflow question](https://stackoverflow.com/questions/37570410/how-to-set-environment-variables-in-apache-xampp) that suggested placing them in the Apache httpd.conf file. So I tried it and it worked! I added it to the bottom of the file and restarted the server.
+
+```php file=httpd.conf
+...
+
+SetEnv CLEARDB_DATABASE_URL "get this value from the Heroku config"
+
+```
+
+So now I have routing working on both my local environment and my deployed site! ✅
+
