@@ -158,3 +158,43 @@ SetEnv CLEARDB_DATABASE_URL "get this value from the Heroku config"
 
 So now I have routing working on both my local environment and my deployed site! ✅
 
+## Day 3 - 13/04/2022
+
+Today I'll be working on the data. I've done a database class so I think I'll start with figuring out the structure of the data in the database then I'll go ahead and create the necessary tables. 
+
+The values I have to consider are:
+- SKU (unique for each product)
+- Name
+- Price in $
+- Product specific attributes and their values:
+    - Size (in MB) for DVD-disk
+    - Weight (in Kg) for Books
+    - Dimensions (HxWxL) for Furniture
+
+I first transfered these values into table format in their Unnormalized form. 
+
+I then identified that there are no repeating groups. Thefore the data already satisfies the 1st Normal Form requirements.
+
+There were also no partial dependencies therefore the data was already in 2nd Normal Form.
+
+There were however, transitive dependencies. The type of product would determine the value associated with the type. This creates an anomally where if the table were to remain as is and a product type that occured only once were deleted, the product type information would be lost. This is solved by separating the table into two. 
+
+### Products Table
+
+| ID        | ProductSKU       | ProductName     | ProductPrice | ProductType | ProductMeasurementValues |
+| :---------| :----------------| :---------------| :------------| :-----------| :------------------------|
+| 1         | JVC200123        | Acme Disk       | 1.00$        | DVD-disk    | 700                      |
+| 2         | GGWP007          | War and Peace   | 20.00$       | Book        | 2                        |
+| 3         | TR120555         | Chair           | 40.00$       | Furniture   | 24x45x15                 |
+
+### Product Types Table
+
+| ID        | TypeName  | TypeMeasurement     | TypeStandardUnit |
+| :---------| :---------| :-------------------| :----------------|
+| 1         | DVD-disk  | Size                | MB               |
+| 2         | Book      | Weight              | Kg               |
+| 3         | Furniture | Dimensions          | (HxWxL)          |
+
+With the tables created and values added, tomorrow I'll take a stab at trying to retrieve the values and display them.
+
+We now have the structure of the database and some sample data in the database.✅
