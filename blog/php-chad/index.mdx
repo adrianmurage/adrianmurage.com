@@ -88,6 +88,43 @@ And that got my local app working exactly like the deployed app!
 
 Which marks the end of day 1 learning and building with PHP 🥳
 
+The php code used to connect to the database at this level looks like this:
+
+```php
+$cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$cleardb_server = $cleardb_url["host"];
+$cleardb_username = $cleardb_url["user"];
+$cleardb_password = $cleardb_url["pass"];
+$cleardb_db = substr($cleardb_url["path"], 1);
+$active_group = 'default';
+$query_builder = TRUE;
+// Connect to DB
+$conn = mysqli_connect($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
+
+if (!$conn) {
+    echo "Connection falied!";
+} else {
+    echo 'Connection successful!' . '<br>';
+};
+
+
+$query = "SELECT * FROM test_table";
+$result = $conn->query($query);
+
+$rows = $result->num_rows;
+
+for ($i = 0; $i < $rows; ++$i) {
+    $result->data_seek($i);
+    echo 'First Name: ' . htmlspecialchars($result->fetch_assoc()['FirstName']) . '<br>';
+}
+
+echo "hi productlist";
+
+```
+
+![Connect to database using procedural php](./procedural_php_connect_to_db.png)
+
+
 What I accomplished today:
 1. Setup a local PHP development enviroment
 2. Setup a remote database and connected it to my PHP app
@@ -198,3 +235,162 @@ There were however, transitive dependencies. The type of product would determine
 With the tables created and values added, tomorrow I'll take a stab at trying to retrieve the values and display them.
 
 We now have the structure of the database and some sample data in the database.✅
+
+## Day 4 - 24/04/2022
+
+So I've been reading up on OOP over the past few days and today I'll be attempting to use classes to access the database. 
+
+The first thing was to create a class that would help me access the database. 
+I used this [OOP PHP tutorial series](https://www.youtube.com/playlist?list=PL0eyrZgxdwhypQiZnYXM7z7-OTkcMgGPh) by Dani Krossing to learn OOP. 
+
+From his lessons, I came up with this `Dbh class` that would handle database connections. Any classes that would need access to the database would then need to extend it.
+
+```php
+class Dbh
+{
+    private $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+    private $cleardb_host = $this->cleardb_url["host"];
+    private $cleardb_username = $this->cleardb_url["user"];
+    private $cleardb_password = $this->cleardb_url["pass"];
+    private $cleardb_db_name = substr($this->cleardb_url["path"], 1);
+
+    protected function connect()
+    {
+        $dsn = 'mysql:host=' . $this->cleardb_host . ';dbname=' . $this->cleardb_db_name;
+        $pdo = new PDO($dsn, $this->cleardb_username, $this->cleardb_password);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        if (!$pdo) {
+            echo "connection failed!";
+        } else {
+            echo "connection successful!" . '<br>';
+        }
+        return $pdo;
+    }
+}
+```
+
+I then created a `Test class` to try and connect to my database. 
+
+```php
+class Test extends Dbh
+{
+    public function getUser()
+    {
+        $query = "SELECT * FROM test_table";
+        $result = $this->connect()->query($query);
+        while($row = $result->fetch()){
+            echo $row['FirstName'] . '<br>';
+        }
+    }
+}
+
+$connection = new Test();
+$connection->getUser();
+```
+
+But on running it I got this error:
+
+> Fatal error: Constant expression contains invalid operations in C:\xampp\htdocs\productlist\productlist.php on line 36
+
+I then tinkered around with the values and realized that you can't declare class properties the way I had done in the `Dbh class`. From [this stack overflow question](https://stackoverflow.com/questions/24976546/calling-environment-variables-inside-class-not-working) I learnt that:
+
+> but this initialization must be a constant value--that is, it must be able to be evaluated at compile time and must not depend on run-time information in order to be evaluated
+
+That led me to refactoring the code to: 
+
+```php
+class Dbh
+{
+    private $cleardb_url = null;
+    private $cleardb_host = null;
+    private $cleardb_username = null;
+    private $cleardb_password = null;
+    private $cleardb_db_name = null;
+
+    function __construct()
+    {
+        $this->cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+        $this->cleardb_host = $this->cleardb_url["host"];
+        $this->cleardb_username = $this->cleardb_url["user"];
+        $this->cleardb_password = $this->cleardb_url["pass"];
+        $this->cleardb_db_name = substr($this->cleardb_url["path"], 1);
+    }
+
+    protected function connect()
+    {
+        $dsn = 'mysql:host=' . $this->cleardb_host . ';dbname=' . $this->cleardb_db_name;
+        $pdo = new PDO($dsn, $this->cleardb_username, $this->cleardb_password);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        if (!$pdo) {
+            echo "connection failed!";
+        } else {
+            echo "connection successful!" . '<br>';
+        }
+        return $pdo;
+    }
+}
+```
+
+And I had my successful connection!
+
+![Successful connection to database with PDO in php](./php_pdo_successful_connection.png)
+
+
+I then refactored my folder structure to this:
+
+```
+├── classes
+│   ├── dbh.class.php
+│   ├── route.class.php
+│   └── test.class.php
+├── includes
+│   └── classautoloader.inc.php
+├── .gitignore
+├── .htaccess
+├── addproduct.php
+├── composer.json
+├── index.php
+└── productlist.php
+```
+
+The `classautoloader.inc.php` file is a file that allows me to automatically load classes. 
+
+It looks like: 
+```php
+<?php
+
+spl_autoload_register('autoLoader');
+
+
+function autoLoader($className)
+{
+    $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+    if (strpos($url, 'includes') !== false) {
+        $path = '../classes/';
+    } else {
+
+        $path = "classes/";
+    }
+    $extension = ".class.php";
+
+
+    $fullPath = $path . $className . $extension;
+
+    if (!file_exists($fullPath)) {
+        return false;
+    }
+
+    include_once $fullPath;
+}
+```
+I learned how to implement it from [this YouTube video](https://www.youtube.com/watch?v=z3pZdmJ64jo&list=PL0eyrZgxdwhypQiZnYXM7z7-OTkcMgGPh&index=9).
+
+The next things I plan to do are:
+1. Insert into the database from a form.
+2. List out items obtained from the database in a page. 
+
+Once this is setup in as a rough draft, I will then go on to refactor it to meet the standards pointed out in the [app specification document](https://www.notion.so/Junior-Developer-Test-Task-1b2184e40dea47df840b7c0cc638e61e)
+
