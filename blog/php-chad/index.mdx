@@ -394,3 +394,106 @@ The next things I plan to do are:
 
 Once this is setup in as a rough draft, I will then go on to refactor it to meet the standards pointed out in the [app specification document](https://www.notion.so/Junior-Developer-Test-Task-1b2184e40dea47df840b7c0cc638e61e)
 
+
+## Day 5 - 25/04/2022
+
+Okay so the goal today is to create a form that feeds into the database. Then pull out the material and display it in a separate page. 
+
+I'll be using my test table for this exercise. 
+| FirstName | LastName | 
+| :-------- | :------- | 
+| Adrian    | Murage   | 
+| Chris     | Maina    |
+
+I realized that I had not deployed yesterday. So I started with that. I then found out that the autoloader I had build in to the app was not working. After about 30 ish minutes of trying to get it to work, I realized that It isn't a vital component, so I phased it out. 
+
+In the case that I try and work on this again I'll just leave this [stackoverflow question](https://stackoverflow.com/questions/60392938/problem-with-autoloader-in-deploying-php-website-to-heroku) here because I think it might point me in the right direction.
+
+Now that the deployed version is up to date, I'll now try and work on todays bit. 
+
+I was able to create a form in `/add-product`:
+
+```php
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>GFG- Store Data</title>
+</head>
+
+<body>
+    <center>
+        <h1>Storing Form data in Database</h1>
+        <form action="./submitform.php" method="post">
+            <p>
+                <label for="firstName">First Name:</label>
+                <input type="text" name="first_name" id="firstName">
+            </p>
+            <p>
+                <label for="lastName">Last Name:</label>
+                <input type="text" name="last_name" id="lastName">
+            </p>
+            <input type="submit" value="Submit">
+        </form>
+    </center>
+</body>
+
+</html>
+```
+
+On submission it calls `submitform.php` which parses the form values and commits them to the database. On completion it reroutes to the home page `/`.
+
+To make the rerouting work I added the ENVIRONMENT variable to both my production app on heroku and my local environment. 
+
+```php file=httpd.conf
+
+SetEnv ENVIRONMENT "development"
+
+```
+
+```php file=submitform
+<?php
+
+include_once './classes/test.class.php';
+include_once './classes/dbh.class.php';
+
+$first_name = array_key_exists('first_name', $_POST) ? $_POST['first_name'] : "";
+$last_name = array_key_exists('last_name', $_POST) ? $_POST['last_name'] : "";
+
+
+echo $first_name; 
+echo $last_name; 
+
+$insertUser = new Test();
+$insertUser->setNewUser($first_name, $last_name);
+
+$environment = getenv("ENVIRONMENT");
+
+if ($environment == "development"){
+    header('Location:/productlist/');
+} elseif ($environment == "production") {
+    header('Location:/');
+}
+
+```
+
+
+
+The home page then displays all the users:
+
+```php
+<?php
+
+$connection = new Test();
+$connection->getAllUsers();
+```
+
+Which is technically the flow required for the app. 
+
+Fill add product form -> On submission add new product to the database -> Reroute to homepage and load the newly added product alongside all other existing products
+
+Okay cool. Some progress. 
+
+The next step is to figure out how to build the form according to the specification and update the function that interacts with the database to send it to its rightful table in the database. 
+
+I'll work on that tomorrow. 
