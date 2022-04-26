@@ -15,7 +15,14 @@ const IndexPage = () => {
         <div>
           <h1 className={profileHeading}>Hi there, I'm Adrian Murage 👋🏽</h1>
           <p>
-            I love building things. The rush I get from it is unparalleled.
+            I am currently exploring being mediocre. I'm at the start of my
+            career, hungry to learn and putting in the work that's needed to
+            know more about what I find interesting.
+          </p>
+          <p>
+            So far, that has been software development in a business context
+            where the primary goal is creating value and solving problems with
+            software.
           </p>
           <p>
             I am currently interning at{" "}
@@ -27,16 +34,21 @@ const IndexPage = () => {
               ></StaticImage>
             </a>
             . Where I help produce the{" "}
-            <a href="https://podcast.hackernoon.com/">HackerNoon Podcast.</a>
+            <a href="https://podcast.hackernoon.com/">HackerNoon Podcast.</a>{" "}
+            and learn about content and distribution.
           </p>
           <p>
-            On the side, I am re-training as a Frontend Developer primarily
-            working with React JS.
+            On the side, I learning Frontend Development primarily working with
+            React JS.
           </p>
           <p>
-            Welcome to my digital garden where I share what I'm learning,
-            showcase my projects 🚀, document becoming a better developer,
-            and growing a career in tech 💻
+            On this website you'll find: 1. My portfolio. 2. My blogposts
+            (ideas, tutorials, documentation)
+          </p>
+          <p>
+            Feel free to poke around and{" "}
+            <a href="mailto:adrianmurage21@gmail.com">reach out to me</a> if you
+            would like to explore anthing you find interesting on here.
           </p>
         </div>
         <div>
